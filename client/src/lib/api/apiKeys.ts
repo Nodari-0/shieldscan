@@ -47,7 +47,7 @@ function hashKey(key: string) {
   return crypto.createHash('sha256').update(key).digest('hex');
 }
 
-export function generateApiKey(): { plain: string; hash: string } {
+export async function generateApiKey(): Promise<{ plain: string; hash: string }> {
   const plain = crypto.randomBytes(API_KEY_BYTES).toString('hex');
   return { plain, hash: hashKey(plain) };
 }
@@ -60,7 +60,7 @@ export async function createApiKey(params: {
   rateLimit: number;
   expiresAt?: Date;
 }): Promise<{ id: string; apiKey: string }> {
-  const { plain, hash } = generateApiKey();
+  const { plain, hash } = await generateApiKey();
 
   const docRef = await addDoc(collection(db, 'apiKeys'), {
     userId: params.userId,
