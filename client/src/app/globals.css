@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Testimonials infinite scroll animation */
+@keyframes testimonial-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% / 3));
+  }
+}
+
+.animate-testimonial-scroll {
+  animation: testimonial-scroll 60s linear infinite;
+  display: flex;
+  width: fit-content;
+}
+
+.animate-testimonial-scroll:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  @keyframes testimonial-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+/* Skeleton Loading Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    to right,
+    #1a1f2e 0%,
+    #2a3441 20%,
+    #1a1f2e 40%,
+    #1a1f2e 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@layer base {
+  * {
+    font-family: var(--font-space-grotesk), system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    @apply bg-black text-gray-100 antialiased;
+    letter-spacing: -0.01em;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-exo2), sans-serif !important;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  button, a {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-weight: 500;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Dashboard font size scaling - explicit zoom values */
+  .dashboard-text-small {
+    zoom: 0.85;
+  }
+
+  .dashboard-text-medium {
+    zoom: 1;
+  }
+
+  .dashboard-text-large {
+    zoom: 1.15;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent;
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-md bg-dark-secondary/80 border border-dark-accent/50;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/10;
+  }
+
+  /* Professional Neon Text Effect */
+  .neon-text {
+    @apply font-display;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .neon-purple {
+    @apply text-purple-400;
+    text-shadow: 
+      0 0 5px rgba(168, 85, 247, 0.5),
+      0 0 10px rgba(168, 85, 247, 0.3),
+      0 0 15px rgba(168, 85, 247, 0.2);
+  }
+
+  .neon-yellow {
+    @apply text-yellow-400;
+    text-shadow: 
+      0 0 5px rgba(250, 204, 21, 0.5),
+      0 0 10px rgba(250, 204, 21, 0.3),
+      0 0 15px rgba(250, 204, 21, 0.2);
+  }
+
+  .neon-green {
+    @apply text-green-400;
+    text-shadow: 
+      0 0 5px rgba(74, 222, 128, 0.5),
+      0 0 10px rgba(74, 222, 128, 0.3),
+      0 0 15px rgba(74, 222, 128, 0.2);
+  }
+
+  /* Smooth color transitions for typewriter */
+  .neon-text-transition {
+    transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar,
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar,
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+
+  /* Global scrollbar hide for dashboard */
+  .dashboard-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+  }
+  
+  .dashboard-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .dashboard-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .dashboard-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+  }
+  
+  .dashboard-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+}
+

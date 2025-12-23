@@ -1,0 +1,34 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             firestore.exists(/databases/(default)/documents/admin_users/$(request.auth.uid));
+    }
+    
+    // Scan reports storage
+    match /reports/{userId}/{scanId}/{fileName} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if false; // Only via server
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+    
+    // User uploads (if needed for future features)
+    match /uploads/{userId}/{allPaths=**} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isOwner(userId) && 
+                      request.resource.size < 5 * 1024 * 1024; // 5MB limit
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+  }
+}

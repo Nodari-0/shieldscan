@@ -1,0 +1,65 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [develop]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  deploy-staging:
+    name: Deploy to Firebase Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Build application
+        working-directory: ./client
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.STAGING_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.STAGING_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.STAGING_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.STAGING_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.STAGING_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.STAGING_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STAGING_STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_ADMIN_EMAILS: ${{ secrets.NEXT_PUBLIC_ADMIN_EMAILS }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting (Staging)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.STAGING_FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ secrets.STAGING_FIREBASE_PROJECT_ID }}
+          channelId: staging
+          expires: 7d
+
+      - name: Post deployment comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 Staging deployment complete! Preview available at: https://staging.shieldscan.com'
+            })
+

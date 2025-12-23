@@ -1,0 +1,29 @@
+# ShieldScan Robots.txt
+# https://shieldscan.io
+
+# Allow all search engines
+User-agent: *
+Allow: /
+
+# Disallow private routes
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /account
+Disallow: /account/*
+Disallow: /api/
+Disallow: /api/*
+Disallow: /test-auth
+
+# Google-specific rules
+User-agent: Googlebot
+Crawl-delay: 1
+
+# Bing-specific rules
+User-agent: Bingbot
+Crawl-delay: 2
+
+# Sitemap location
+Sitemap: https://shieldscan.io/sitemap.xml
+

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "title": "Understanding Website Security: A Complete Guide to Protecting Your Digital Assets",
+    "excerpt": "Learn the fundamentals of website security, common vulnerabilities, and best practices to keep your online presence safe from cyber threats. This comprehensive guide covers everything from SSL certificates to security headers.",
+    "author": "ShieldScan Team",
+    "date": "2024-12-15",
+    "readTime": "8 min read",
+    "category": "Security",
+    "tags": ["Security", "Best Practices", "SSL", "HTTPS"]
+  },
+  {
+    "id": "2",
+    "title": "How Automated Security Scanning Can Save Your Business Thousands in Breach Costs",
+    "excerpt": "Discover how proactive security scanning can identify vulnerabilities before attackers exploit them. We break down the true cost of security breaches and show how regular scanning pays for itself.",
+    "author": "Security Research Team",
+    "date": "2024-12-10",
+    "readTime": "6 min read",
+    "category": "Business",
+    "tags": ["Business", "ROI", "Security Scanning", "Risk Management"]
+  }
+]
+
