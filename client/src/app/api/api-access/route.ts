@@ -99,7 +99,7 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-export const config = {
-  matcher: '/api/:path*', // Apply to all API routes (adjust as needed)
-};
+// Note: This file appears to be a route handler, not middleware.
+// If you need middleware, create a middleware.ts file at the app root.
+// Route handlers don't use config exports in Next.js 14+
 
