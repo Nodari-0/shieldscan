@@ -3,13 +3,18 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/config';
 import { validateApiKeyRequest } from '@/lib/api/auth';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const apiKeyValidation = await validateApiKeyRequest(request);
   if (!apiKeyValidation.ok) return apiKeyValidation.res;
   const apiKey = apiKeyValidation.key!;
 
+  const { id } = await params;
+
   try {
-    const ref = doc(db, 'scans', params.id);
+    const ref = doc(db, 'scans', id);
     const snap = await getDoc(ref);
     if (!snap.exists()) {
       return NextResponse.json({ error: 'Scan not found' }, { status: 404 });
@@ -29,4 +34,3 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-
